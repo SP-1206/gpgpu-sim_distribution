@@ -320,6 +320,7 @@ enum concrete_scheduler {
   CONCRETE_SCHEDULER_TWO_LEVEL_ACTIVE,
   CONCRETE_SCHEDULER_WARP_LIMITING,
   CONCRETE_SCHEDULER_OLDEST_FIRST,
+  CONCRETE_SCHEDULER_HYBRID,
   NUM_CONCRETE_SCHEDULERS
 };
 
@@ -360,16 +361,21 @@ class scheduler_unit {  // this can be copied freely, so can be used in std
   // modified by changing the contents of the m_next_cycle_prioritized_warps
   // list.
   void cycle();
-
   // These are some common ordering fucntions that the
   // higher order schedulers can take advantage of
+  template <typename K>
+void order_fifo(
+    typename std::vector<K> &result_list,
+    const typename std::vector<K> &input_list,
+    const typename std::vector<K>::const_iterator &last_issued_from_input,
+    unsigned num_warps_to_add);
+  
   template <typename T>
-  void order_lrr(
+	void order_lrr(
       typename std::vector<T> &result_list,
       const typename std::vector<T> &input_list,
       const typename std::vector<T>::const_iterator &last_issued_from_input,
       unsigned num_warps_to_add);
-
   enum OrderingType {
     // The item that issued last is prioritized first then the sorted result
     // of the priority_function
@@ -487,7 +493,24 @@ class oldest_scheduler : public scheduler_unit {
     m_last_supervised_issued = m_supervised_warps.begin();
   }
 };
-
+class hybrid_scheduler : public scheduler_unit {
+ public:
+  hybrid_scheduler(shader_core_stats *stats, shader_core_ctx *shader,
+                Scoreboard *scoreboard, simt_stack **simt,
+                std::vector<shd_warp_t *> *warp, register_set *sp_out,
+                register_set *dp_out, register_set *sfu_out,
+                register_set *int_out, register_set *tensor_core_out,
+                std::vector<register_set *> &spec_cores_out,
+                register_set *mem_out, int id)
+      : scheduler_unit(stats, shader, scoreboard, simt, warp, sp_out, dp_out,
+                       sfu_out, int_out, tensor_core_out, spec_cores_out,
+                       mem_out, id) {}
+  virtual ~hybrid_scheduler() {}
+  virtual void order_warps();
+  virtual void done_adding_supervised_warps() {
+    m_last_supervised_issued = m_supervised_warps.begin();
+  }
+};
 class two_level_active_scheduler : public scheduler_unit {
  public:
   two_level_active_scheduler(shader_core_stats *stats, shader_core_ctx *shader,

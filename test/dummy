@@ -1,0 +1,16 @@
+kernel line : count latency dram_traffic smem_bk_conflicts smem_warp gmem_access_generated gmem_warp exposed_latency warp_divergence
+simp.1.sm_30.ptx 39 : 5000 30064 0 0 0 625 157 0 0 
+simp.1.sm_30.ptx 38 : 5000 45000 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 37 : 5000 1032408 0 0 0 625 157 0 0 
+simp.1.sm_30.ptx 36 : 5000 45000 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 35 : 5000 49288 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 34 : 5000 34896 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 32 : 5120 792 0 0 0 0 0 0 1 
+simp.1.sm_30.ptx 31 : 5120 30720 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 26 : 5120 39680 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 42 : 5120 25792 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 25 : 5120 24320 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 27 : 5120 25600 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 28 : 5120 25600 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 29 : 5120 25600 0 0 0 0 0 0 0 
+simp.1.sm_30.ptx 30 : 5120 53760 0 0 0 0 0 0 0 

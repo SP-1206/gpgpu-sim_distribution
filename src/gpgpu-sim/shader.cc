@@ -28,6 +28,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include "shader.h"
+#include <typeinfo>
 #include <float.h>
 #include <limits.h>
 #include <string.h>
@@ -47,7 +48,8 @@
 #include "stat-tool.h"
 #include "traffic_breakdown.h"
 #include "visualizer.h"
-
+#include <queue>
+#include "../abstract_hardware_model.h"
 #define PRIORITIZE_MSHR_OVER_WB 1
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
@@ -177,9 +179,11 @@ void shader_core_ctx::create_schedulers() {
                             : sched_config.find("warp_limiting") !=
                                       std::string::npos
                                   ? CONCRETE_SCHEDULER_WARP_LIMITING
-                                  : NUM_CONCRETE_SCHEDULERS;
+				  : sched_config.find("hybrid") != 
+				  	std::string::npos
+                                    ? CONCRETE_SCHEDULER_HYBRID
+                                  	: NUM_CONCRETE_SCHEDULERS;
   assert(scheduler != NUM_CONCRETE_SCHEDULERS);
-
   for (unsigned i = 0; i < m_config->gpgpu_num_sched_per_core; i++) {
     switch (scheduler) {
       case CONCRETE_SCHEDULER_LRR:
@@ -222,7 +226,13 @@ void shader_core_ctx::create_schedulers() {
             &m_pipeline_reg[ID_OC_TENSOR_CORE], m_specilized_dispatch_reg,
             &m_pipeline_reg[ID_OC_MEM], i, m_config->gpgpu_scheduler_string));
         break;
-      default:
+	case CONCRETE_SCHEDULER_HYBRID:
+
+	schedulers.push_back(new hybrid_scheduler(m_stats, this, m_scoreboard, m_simt_stack, &m_warp,&m_pipeline_reg[ID_OC_SP], &m_pipeline_reg[ID_OC_DP],&m_pipeline_reg[ID_OC_SFU], &m_pipeline_reg[ID_OC_INT],&m_pipeline_reg[ID_OC_TENSOR_CORE], m_specilized_dispatch_reg,&m_pipeline_reg[ID_OC_MEM], i));
+//	exit(1);
+	break;
+
+  	default:
         abort();
     };
   }
@@ -1026,17 +1036,17 @@ void shader_core_ctx::issue_warp(register_set &pipe_reg_set,
 
 void shader_core_ctx::issue() {
   // Ensure fair round robin issu between schedulers
-  unsigned j;
-  for (unsigned i = 0; i < schedulers.size(); i++) {
-    j = (Issue_Prio + i) % schedulers.size();
-    schedulers[j]->cycle();
-  }
-  Issue_Prio = (Issue_Prio + 1) % schedulers.size();
+//  unsigned j;
+//  for (unsigned i = 0; i < schedulers.size(); i++) {
+//    j = (Issue_Prio + i) % schedulers.size();
+ //   schedulers[j]->cycle();
+ // }
+  //Issue_Prio = (Issue_Prio + 1) % schedulers.size();
 
   // really is issue;
-  // for (unsigned i = 0; i < schedulers.size(); i++) {
-  //    schedulers[i]->cycle();
-  //}
+   for (unsigned i = 0; i < schedulers.size(); i++) {
+      schedulers[i]->cycle();
+  }
 }
 
 shd_warp_t &scheduler_unit::warp(int i) { return *((*m_warp)[i]); }
@@ -1063,6 +1073,30 @@ shd_warp_t &scheduler_unit::warp(int i) { return *((*m_warp)[i]); }
  * then only the warps with highest RR priority will be placed in the
  * result_list.
  */
+
+//shader.cc
+template <class T>
+void scheduler_unit::order_fifo(
+    std::vector<T> &result_list, const typename std::vector<T> &input_list,
+    const typename std::vector<T>::const_iterator &last_issued_from_input,
+    unsigned num_warps_to_add)  {
+	printf("entering the order_fifo near entry?\n");
+  assert(num_warps_to_add <= input_list.size());
+  result_list.clear();
+unsigned m_last_issued_index=0;
+printf("near unsigned dec?\n");
+  for (unsigned count = 0; count < num_warps_to_add; ++count) {
+    if (m_last_issued_index == input_list.size()) {
+      m_last_issued_index = 0;
+    }
+    printf("m_last_issued_inde %u\n",m_last_issued_index);
+    result_list.push_back(input_list[m_last_issued_index]);
+    ++m_last_issued_index;
+  }
+  printf("exiting the order_fifo near exit?\n");
+}
+
+
 template <class T>
 void scheduler_unit::order_lrr(
     std::vector<T> &result_list, const typename std::vector<T> &input_list,
@@ -1081,6 +1115,8 @@ void scheduler_unit::order_lrr(
     result_list.push_back(*iter);
   }
 }
+
+
 
 /**
  * A general function to order things in an priority-based way.
@@ -1429,6 +1465,8 @@ void scheduler_unit::cycle() {
     m_stats->shader_cycle_distro[2]++;  // pipeline stalled
 }
 
+
+
 void scheduler_unit::do_on_warp_issued(
     unsigned warp_id, unsigned num_issued,
     const std::vector<shd_warp_t *>::const_iterator &prioritized_iter) {
@@ -1452,6 +1490,18 @@ bool scheduler_unit::sort_warps_by_oldest_dynamic_id(shd_warp_t *lhs,
   }
 }
 
+
+void hybrid_scheduler::order_warps() {
+  //order_by_priority(m_next_cycle_prioritized_warps, m_supervised_warps,
+  //                  m_last_supervised_issued, m_supervised_warps.size(),
+  //                  ORDERING_GREEDY_THEN_PRIORITY_FUNC,
+  //                  scheduler_unit::sort_warps_by_oldest_dynamic_id);
+  order_fifo(m_next_cycle_prioritized_warps, m_supervised_warps,
+                m_last_supervised_issued, m_supervised_warps.size());
+   	printf("lets exit already!!\n");
+//  exit(1);
+}
+
 void lrr_scheduler::order_warps() {
   order_lrr(m_next_cycle_prioritized_warps, m_supervised_warps,
             m_last_supervised_issued, m_supervised_warps.size());
@@ -1463,6 +1513,7 @@ void gto_scheduler::order_warps() {
                     ORDERING_GREEDY_THEN_PRIORITY_FUNC,
                     scheduler_unit::sort_warps_by_oldest_dynamic_id);
 }
+
 
 void oldest_scheduler::order_warps() {
   order_by_priority(m_next_cycle_prioritized_warps, m_supervised_warps,
