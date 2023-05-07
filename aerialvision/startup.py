@@ -111,7 +111,7 @@ def fileInput(cl_files=None):
     instance = Tk.Tk();
     instance.title("File Input")
     #set the window size
-    root = Tk.Frame(instance, width = 1100, height = 550, bg = 'white');
+    root = Tk.Frame(instance, width = 2500, height = 550, bg = 'white');
     root.pack_propagate(0);
     root.pack();
 
@@ -486,11 +486,11 @@ def startup(res, TEFILES):
 
     #set the window size
     if res == 'small':
-        root = Tk.Frame(instance, width = 1325, height = 850, bg = 'white');
+        root = Tk.Frame(instance, width = 3325, height = 850, bg = 'white');
     elif res == 'medium':
-        root = Tk.Frame(instance, width = 1700, height = 1100, bg = 'white');
+        root = Tk.Frame(instance, width = 4700, height = 1100, bg = 'white');
     else:
-        root = Tk.Frame(instance, width = 1700, height = 1100, bg = 'white');
+        root = Tk.Frame(instance, width = 4700, height = 1100, bg = 'white');
     root.pack_propagate(0);
     root.pack();
 
@@ -507,11 +507,11 @@ def startup(res, TEFILES):
     #The top frame for the control panel
     # Frame for Control Panel
     if res == 'small':
-        controlPanel = Tk.Frame(visualizer, width=1250, height= 50, bg ="beige", borderwidth = 5, relief = Tk.GROOVE);
+        controlPanel = Tk.Frame(visualizer, width=4250, height= 50, bg ="beige", borderwidth = 5, relief = Tk.GROOVE);
     elif res == 'medium':
-        controlPanel = Tk.Frame(visualizer, width=1530, height= 50, bg ="beige", borderwidth = 5, relief = Tk.GROOVE);
+        controlPanel = Tk.Frame(visualizer, width=4530, height= 50, bg ="beige", borderwidth = 5, relief = Tk.GROOVE);
     else:
-        controlPanel = Tk.Frame(visualizer, width=1530, height= 50, bg ="beige", borderwidth = 5, relief = Tk.GROOVE);
+        controlPanel = Tk.Frame(visualizer, width=4530, height= 50, bg ="beige", borderwidth = 5, relief = Tk.GROOVE);
     controlPanel.pack(anchor = Tk.N, pady = 5);
     controlPanel.pack_propagate(0)
 
@@ -547,11 +547,11 @@ def startup(res, TEFILES):
     #Instantiating the Main frame
     #Frame for Graphing Area
     if res == 'small':
-        graphMainFrame = Tk.Frame(visualizer, width = 1250, height = 750, borderwidth = 5, relief = Tk.GROOVE);
+        graphMainFrame = Tk.Frame(visualizer, width = 4250, height = 750, borderwidth = 5, relief = Tk.GROOVE);
     elif res == 'medium':
-        graphMainFrame = Tk.Frame(visualizer, width = 1615, height = 969, borderwidth = 5, relief = Tk.GROOVE);
+        graphMainFrame = Tk.Frame(visualizer, width = 4615, height = 969, borderwidth = 5, relief = Tk.GROOVE);
     else:
-        graphMainFrame = Tk.Frame(visualizer, width = 1615, height = 969, borderwidth = 5, relief = Tk.GROOVE);
+        graphMainFrame = Tk.Frame(visualizer, width = 4615, height = 969, borderwidth = 5, relief = Tk.GROOVE);
     graphMainFrame.pack(pady = 5);
     graphMainFrame.pack_propagate(0);
     
@@ -593,11 +593,11 @@ def startup(res, TEFILES):
     # INITIALIZING THE SOURCE CODE VIEW
     
     if res == 'small':
-        textControlPanel = Tk.Frame(textEditor, width = 1250, height = 50, bg = 'beige', borderwidth =  5, relief = Tk.GROOVE)
+        textControlPanel = Tk.Frame(textEditor, width = 4250, height = 50, bg = 'beige', borderwidth =  5, relief = Tk.GROOVE)
     elif res == 'medium':
-        textControlPanel = Tk.Frame(textEditor, width = 1530, height = 50, bg = 'beige', borderwidth =  5, relief = Tk.GROOVE)
+        textControlPanel = Tk.Frame(textEditor, width = 4530, height = 50, bg = 'beige', borderwidth =  5, relief = Tk.GROOVE)
     else:
-        textControlPanel = Tk.Frame(textEditor, width = 1530, height = 50, bg = 'beige', borderwidth =  5, relief = Tk.GROOVE)    
+        textControlPanel = Tk.Frame(textEditor, width = 4530, height = 50, bg = 'beige', borderwidth =  5, relief = Tk.GROOVE)    
    
    
     textControlPanel.pack(anchor = Tk.N, pady = 5)
@@ -621,11 +621,11 @@ def startup(res, TEFILES):
     bTextQuit.pack(side = Tk.LEFT)
     
     if res == 'small':
-        textMainFrame = Tk.Frame(textEditor, width = 1250, height = 750, borderwidth = 5, relief = Tk.GROOVE)
+        textMainFrame = Tk.Frame(textEditor, width = 4250, height = 750, borderwidth = 5, relief = Tk.GROOVE)
     elif res == 'medium':
-        textMainFrame = Tk.Frame(textEditor, width = 1615, height = 969, borderwidth = 5, relief = Tk.GROOVE)
+        textMainFrame = Tk.Frame(textEditor, width = 4615, height = 969, borderwidth = 5, relief = Tk.GROOVE)
     else:
-        textMainFrame = Tk.Frame(textEditor, width = 1615, height = 969, borderwidth = 5, relief = Tk.GROOVE)
+        textMainFrame = Tk.Frame(textEditor, width = 4615, height = 969, borderwidth = 5, relief = Tk.GROOVE)
         
     textMainFrame.pack(pady = 5)
     textMainFrame.pack_propagate(0)

@@ -231,7 +231,7 @@ class formEntry:
     self.subplotTabs.pack(fill='both',expand = 'True')
     tmpInnerSubplotWindow = self.subplotTabs.add('No Subplots Chosen Yet')
     tmpInnerSubplotWindow.pack()
-    tmpInnerSubplotWindow1 = Tk.Frame(tmpInnerSubplotWindow, bg = 'white', height = 300, width = 300)
+    tmpInnerSubplotWindow1 = Tk.Frame(tmpInnerSubplotWindow, bg = 'white', height = 800, width = 800)
     tmpInnerSubplotWindow1.pack(fill = 'both')
     tmpInnerSubplotWindow1.pack_propagate(0)
     tmpInnerSubplotWindow1Title = Tk.Label(tmpInnerSubplotWindow1, text = 'You have not chosen to have any subplots', bg= 'white')
@@ -561,7 +561,7 @@ class formEntry:
 class subplotInstance(formEntry):
   
   def __init__(self, master,data,plotInstance, subNum):
-    frame = Tk.Frame(master, width = 700, height = 300, bg ='white')
+    frame = Tk.Frame(master, width = 1700, height = 1300, bg ='white')
     frame.pack()
     frame.pack_propagate(0)
     
@@ -634,7 +634,7 @@ class subplotInstance(formEntry):
     lTypeGraph.pack(side= Tk.LEFT);
     bQTypeGraphHelp = Tk.Button(typeGraph, text = " ? -->", command = (lambda: self.helpMsg('Double-Click on the graph type to select it.')))
     bQTypeGraphHelp.pack(side =Tk.LEFT, padx = 5)
-    self.cTypeGraph = Tk.Listbox(typeGraph, width = 50, height = 3)
+    self.cTypeGraph = Tk.Listbox(typeGraph, width = 500, height = 30)
     self.cTypeGraph.bind("<Double-Button-1>", self.chooseGraph)
     self.cTypeGraph.pack(side = Tk.LEFT)
     
@@ -735,19 +735,19 @@ class graphManager:
         self.displayData = {}
 
         if self.res == "small":
-            self.underneathGraph = Tk.Frame(master, borderwidth = 5, relief = Tk.GROOVE, height = 100, width = 1225);
+            self.underneathGraph = Tk.Frame(master, borderwidth = 5, relief = Tk.GROOVE, height = 100, width = 11225);
         elif self.res == 'medium':
-            self.underneathGraph = Tk.Frame(master, borderwidth = 5, relief = Tk.GROOVE, height = 100, width = 1572);
+            self.underneathGraph = Tk.Frame(master, borderwidth = 5, relief = Tk.GROOVE, height = 100, width = 11572);
         else:
-            self.underneathGraph = Tk.Frame(master, borderwidth = 5, relief = Tk.GROOVE, height = 100, width = 1572);
+            self.underneathGraph = Tk.Frame(master, borderwidth = 5, relief = Tk.GROOVE, height = 100, width = 11572);
         self.underneathGraph.pack(side = Tk.BOTTOM, fill = Tk.X )
         
         if self.res == "small":
-            self.graphArea = Tk.Canvas(master, bg = "black", borderwidth = 5, relief = Tk.GROOVE, width = 1200);
+            self.graphArea = Tk.Canvas(master, bg = "black", borderwidth = 5, relief = Tk.GROOVE, width = 11200);
         elif self.res == 'medium':
-            self.graphArea = Tk.Canvas(master, bg = "black", borderwidth = 5, relief = Tk.GROOVE, width = 1513, height = 800);
+            self.graphArea = Tk.Canvas(master, bg = "black", borderwidth = 5, relief = Tk.GROOVE, width = 11513, height = 800);
         else:
-            self.graphArea = Tk.Canvas(master, bg = "black", borderwidth = 5, relief = Tk.GROOVE, width = 1513, height = 800);
+            self.graphArea = Tk.Canvas(master, bg = "black", borderwidth = 5, relief = Tk.GROOVE, width = 11513, height = 800);
         self.graphArea.pack(side = Tk.BOTTOM, fill = Tk.BOTH, expand = 1)
         
         ## Allow user to choose specific graph options
@@ -2017,15 +2017,15 @@ class newTextTab:
         
         
         if self.res == "small":
-            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 700, width = 1200);
+            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 700, width = 11200);
             #annotationFrame = Tk.Frame(self.background, bg= 'white', height = 550, width = 400)
             #textFrame = Tk.Frame(self.background, bg= 'white', height = 550, width = 300)
         elif self.res == 'medium':
-            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 1530);
+            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 11530);
             #annotationFrame = Tk.Frame(self.background, bg = 'white', height = 700, width = 500)
             #textFrame = Tk.Frame(self.background, bg= 'white', height = 700, width = 800)
         else:
-            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 1530);
+            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 11530);
             #annotationFrame = Tk.Frame(self.background, bg= 'green', height = 864, width = 400)
             #textFrame = Tk.Frame(self.background, bg= 'brown', height = 864, width = 900)
         self.background.pack()
@@ -2106,7 +2106,7 @@ class newTextTab:
         chosenDataFrame.pack(side = Tk.LEFT, padx = 5)
         lChosenData = Tk.Label(chosenDataFrame, text = 'Chosen Data', bg = 'white')
         lChosenData.pack(side = Tk.TOP)
-        self.cChosenData = Tk.Text(chosenDataFrame, width = 45, height = 10)
+        self.cChosenData = Tk.Text(chosenDataFrame, width = 450, height = 100)
         self.cChosenData.pack(side = Tk.TOP)
         self.cChosenData.tag_config('complete', background = 'green')
         self.cChosenData.tag_config('incomplete', background= 'red')
@@ -2132,29 +2132,29 @@ class newTextTab:
     def showData(self):
         self.background.destroy()
         if self.res == "small":
-            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 725, width = 1225);
-            topFrame = Tk.Frame(self.background, bg = 'white', height = 442, width = 1225)
-            textFrame = Tk.Frame(topFrame, bg = 'green', height = 442, width = 860)
-            outStatsFrame = Tk.Frame(topFrame, bg= 'white', height = 442, width = 352)
-            statsFrame = Tk.Frame(outStatsFrame, bg = 'red', height = 413, width = 352)
-            bottomFrame = Tk.Frame(self.background, bg= 'purple', height = 284, width = 1225)
-            toolbarFrame = Tk.Frame(outStatsFrame, bg = 'gray', height = 38, width = 352)
+            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 725, width = 11225);
+            topFrame = Tk.Frame(self.background, bg = 'white', height = 442, width = 11225)
+            textFrame = Tk.Frame(topFrame, bg = 'green', height = 442, width = 1860)
+            outStatsFrame = Tk.Frame(topFrame, bg= 'white', height = 442, width = 1352)
+            statsFrame = Tk.Frame(outStatsFrame, bg = 'red', height = 413, width = 1352)
+            bottomFrame = Tk.Frame(self.background, bg= 'purple', height = 284, width = 11225)
+            toolbarFrame = Tk.Frame(outStatsFrame, bg = 'gray', height = 38, width =1352)
         elif self.res == 'medium':
-            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 1530);
-            topFrame = Tk.Frame(self.background, bg = 'white', height = 575, width = 1530)
-            textFrame = Tk.Frame(topFrame, bg = 'green', height = 575, width = 1075)
-            outStatsFrame = Tk.Frame(topFrame, bg= 'white', height = 575, width = 440)
-            statsFrame = Tk.Frame(outStatsFrame, bg = 'red', height = 537, width = 440)
-            bottomFrame = Tk.Frame(self.background, bg= 'purple', height = 370, width = 1530)
-            toolbarFrame = Tk.Frame(outStatsFrame, bg = 'black', height = 38, width = 440)
+            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 11530);
+            topFrame = Tk.Frame(self.background, bg = 'white', height = 575, width = 11530)
+            textFrame = Tk.Frame(topFrame, bg = 'green', height = 575, width = 11075)
+            outStatsFrame = Tk.Frame(topFrame, bg= 'white', height = 575, width = 1440)
+            statsFrame = Tk.Frame(outStatsFrame, bg = 'red', height = 537, width = 1440)
+            bottomFrame = Tk.Frame(self.background, bg= 'purple', height = 370, width = 11530)
+            toolbarFrame = Tk.Frame(outStatsFrame, bg = 'black', height = 38, width = 1440)
         else:
-            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 1530);
-            topFrame = Tk.Frame(self.background, bg = 'white', height = 575, width = 1530)
-            textFrame = Tk.Frame(topFrame, bg = 'green', height = 575, width = 1075)
-            outStatsFrame = Tk.Frame(topFrame, bg= 'white', height = 575, width = 440)
-            statsFrame = Tk.Frame(outStatsFrame, bg = 'red', height = 537, width = 440)
-            bottomFrame = Tk.Frame(self.background, bg= 'purple', height = 370, width = 1530)
-            toolbarFrame = Tk.Frame(outStatsFrame, bg = 'gray', height = 38, width = 440)
+            self.background = Tk.Frame(self.page, bg = "white", borderwidth = 5, relief = Tk.GROOVE, height = 943, width = 11530);
+            topFrame = Tk.Frame(self.background, bg = 'white', height = 575, width = 11530)
+            textFrame = Tk.Frame(topFrame, bg = 'green', height = 575, width = 11075)
+            outStatsFrame = Tk.Frame(topFrame, bg= 'white', height = 575, width = 1440)
+            statsFrame = Tk.Frame(outStatsFrame, bg = 'red', height = 537, width = 1440)
+            bottomFrame = Tk.Frame(self.background, bg= 'purple', height = 370, width = 11530)
+            toolbarFrame = Tk.Frame(outStatsFrame, bg = 'gray', height = 38, width = 1440)
             
         self.background.pack_propagate(0)
         self.background.pack()
@@ -2177,9 +2177,9 @@ class newTextTab:
         
         scrollbar = Tk.Scrollbar(statsFrame, orient = Tk.VERTICAL )
         scrollbar.pack(side = Tk.RIGHT, fill = 'y')
-        self.textbox = Tk.Text(textFrame, height = 36, width = 150,yscrollcommand = scrollbar.set, wrap = Tk.NONE)
+        self.textbox = Tk.Text(textFrame, height = 36, width = 450,yscrollcommand = scrollbar.set, wrap = Tk.NONE)
         self.textbox.pack(side = Tk.TOP, anchor = Tk.W, padx =10, pady = 5)
-        self.statstextbox = Tk.Text(statsFrame, height = 36, width = 55, yscrollcommand = scrollbar.set, wrap = Tk.NONE)
+        self.statstextbox = Tk.Text(statsFrame, height = 36, width = 155, yscrollcommand = scrollbar.set, wrap = Tk.NONE)
         self.statstextbox.pack(padx = 10, pady = 5)
         self.statstextbox.tag_config('normal', background = 'white', font = self.textFont)
         self.statstextbox.tag_config('highlight',background = 'lightblue', font = self.textFont)
